@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "648824532681",
+    "project_id": "repuestazo-fb781",
+    "storage_bucket": "repuestazo-fb781.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648824532681:android:32aa8a7cd21d86a332e718",
+        "android_client_info": {
+          "package_name": "com.example.repuestazo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648824532681-9c2gd4nl1cnh71toirtaco4aav6bqddc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.repuestazo",
+            "certificate_hash": "314beb66579837ee09310e53942af10bcb5a7b37"
+          }
+        },
+        {
+          "client_id": "648824532681-upoimg5j9mo3kna2h27bjfa6fjrshpoe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApdeGd14CE6mvH_ju5mMk0eGzcYLo5nfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648824532681-upoimg5j9mo3kna2h27bjfa6fjrshpoe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "648824532681-9dl2o02pa7mrsfi6i4oourds4osrjlmf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.repuestazo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
