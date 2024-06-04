@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:repuestazo/views/login/login.dart';
 
 class Body extends StatefulWidget {
@@ -13,12 +15,61 @@ class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  String? _selectedUserType;
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     super.dispose();
+  }
+
+  Future<void> _register() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        // Agrega la información del usuario a la colección "users" en Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'email': _emailController.text.trim(),
+          'phone': _phoneController.text.trim(),
+          'userType': _selectedUserType,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User registered successfully')),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Registration failed')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -41,6 +92,7 @@ class _BodyState extends State<Body> {
             ),
             InputTextField(
               hintText: "Enter Email",
+              controller: _emailController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
@@ -54,6 +106,7 @@ class _BodyState extends State<Body> {
             ),
             InputTextField(
               hintText: "Enter Phone",
+              controller: _phoneController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your phone number';
@@ -65,17 +118,44 @@ class _BodyState extends State<Body> {
                 return null;
               },
             ),
-            InputTextField(
-              hintText: "Enter User Type",
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your user type';
-                }
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 7.0,
+                bottom: 7.0,
+              ),
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  fillColor: Color(0xfff9f9f9),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                hint: Text("Select User Type"),
+                value: _selectedUserType,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedUserType = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a user type';
+                  }
+                  return null;
+                },
+                items: <String>['Client', 'Workshop']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
             ),
             InputTextField(
-              hintText: "Enter password",
+              hintText: "Enter your password",
               obscureText: true,
               controller: _passwordController,
               validator: (value) {
@@ -89,7 +169,7 @@ class _BodyState extends State<Body> {
               },
             ),
             InputTextField(
-              hintText: "Repeat password",
+              hintText: "Repeat your password",
               obscureText: true,
               controller: _confirmPasswordController,
               validator: (value) {
@@ -116,18 +196,16 @@ class _BodyState extends State<Body> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Form is valid, perform the sign-up action
-                    }
-                  },
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold, // Color del texto
-                    ),
-                  ),
+                  onPressed: _isLoading ? null : _register,
+                  child: _isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold, // Color del texto
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -204,7 +282,7 @@ class _InputTextFieldState extends State<InputTextField> {
       ),
       child: TextFormField(
         controller: widget.controller,
-        obscureText: !_passwordVisible,
+        obscureText: widget.obscureText && !_passwordVisible,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(fontWeight: FontWeight.bold),
