@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:repuestazo/Homepage.dart';
 import 'package:repuestazo/views/login/login.dart';
 
 class Body extends StatefulWidget {
@@ -58,7 +59,7 @@ class _BodyState extends State<Body> {
         );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Login()),
+          MaterialPageRoute(builder: (context) => const Myhome()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
