@@ -50,7 +50,7 @@ class Searcher extends SearchDelegate{
                             ),
                             child: Center(
                               child: Text(
-                                '${data?[index].makeID}',
+                                'ID',
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -62,12 +62,12 @@ class Searcher extends SearchDelegate{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${data?[index].makeName}',
+                                '${data?[index].name}',
                                 style: TextStyle(
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w600),
                               ),
-                              Text('${data?[index].modelName}'),
+                              Text('${data?[index].level}'),
                             ],
                           )
                         ],

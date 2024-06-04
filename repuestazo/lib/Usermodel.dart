@@ -1,24 +1,25 @@
 class UserList {
-  int? makeID;
-  String? makeName;
-  int? modelID;
-  String? modelName;
+  String? name;
+  String? img;
+  String? level;
 
-  UserList({this.makeID, this.makeName, this.modelID, this.modelName});
+  UserList({this.name, this.img, this.level});
 
   UserList.fromJson(Map<String, dynamic> json) {
-    makeID = json['Make_ID'];
-    makeName = json['Make_Name'];
-    modelID = json['Model_ID'];
-    modelName = json['Model_Name'];
+    name = json['name'];
+    img = json['img'];
+    level = json['level'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['Make_ID'] = makeID;
-    data['Make_Name'] = makeName;
-    data['Model_ID'] = modelID;
-    data['Model_Name'] = modelName;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['img'] = this.img;
+    data['level'] = this.level;
     return data;
   }
 }
+
+
+
+
