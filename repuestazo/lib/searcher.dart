@@ -26,7 +26,7 @@ class Searcher extends SearchDelegate{
   Widget buildResults(BuildContext context) {
     return Container(
         child: FutureBuilder<List<UserList>>(
-            future: _userList.getUserList(),
+            future: _userList.getUserList(query: query),
             builder: (context, snapshot) {
               var data = snapshot.data;
               if (!snapshot.hasData) {
