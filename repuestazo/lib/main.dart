@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:repuestazo/views/register/addproduct/addproduct.dart';
 import 'package:repuestazo/views/register/register.dart';
 import 'firebase_options.dart';
 
