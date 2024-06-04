@@ -73,7 +73,7 @@ class _BodyState extends State<Body> {
               child: TextFormField(
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
-                  hintText: "Enter your password",
+                  hintText: "Enter password",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
                   fillColor: Color(0xfff9f9f9),
                   filled: true,
