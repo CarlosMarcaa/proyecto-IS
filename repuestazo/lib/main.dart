@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:repuestazo/views/register/register.dart';
+import 'package:repuestazo/views/login/login.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Repuestazo',
-      home: const Register(),
+      home: const Login(),
     );
   }
 }

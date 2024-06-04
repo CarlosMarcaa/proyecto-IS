@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:repuestazo/views/register/register.dart';
 
 class Body extends StatefulWidget {
@@ -11,12 +12,55 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _passwordVisible = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     _passwordVisible = false;
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _signIn() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login successful')),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Register()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Login failed')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -43,6 +87,7 @@ class _BodyState extends State<Body> {
                 bottom: 7.0,
               ),
               child: TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   hintText: "Enter Email",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -71,6 +116,7 @@ class _BodyState extends State<Body> {
                 bottom: 7.0,
               ),
               child: TextFormField(
+                controller: _passwordController,
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
                   hintText: "Enter password",
@@ -119,18 +165,16 @@ class _BodyState extends State<Body> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Form is valid, perform the sign-in action
-                    }
-                  },
-                  child: Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold, // Color del texto
-                    ),
-                  ),
+                  onPressed: _isLoading ? null : _signIn,
+                  child: _isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold, // Color del texto
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -138,7 +182,7 @@ class _BodyState extends State<Body> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                    text: 'Already have an account?',
+                    text: 'Don\'t have an account?',
                     style: const TextStyle(
                       color: Colors.black54,
                       fontWeight: FontWeight.bold,
