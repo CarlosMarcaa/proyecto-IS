@@ -1,15 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/views/login/login.dart';
+import 'package:repuestazo/views/register/register.dart';
 
-class Body extends StatefulWidget {
+class Body extends StatelessWidget {
   const Body({super.key});
 
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,7 +14,7 @@ class _BodyState extends State<Body> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Create an Account",
+            "Welcome Back",
             style: TextStyle(
               fontSize: 28,
               fontFamily: "Inter",
@@ -41,64 +36,6 @@ class _BodyState extends State<Body> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 7.0,
-              bottom: 7.0,
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Enter Phone",
-                hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                fillColor: Color(0xfff9f9f9),
-                filled: true,
-                focusColor: Color(0xfff9f9f9),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 7.0,
-              bottom: 7.0,
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Enter User Type",
-                hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                fillColor: Color(0xfff9f9f9),
-                filled: true,
-                focusColor: Color(0xfff9f9f9),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 7.0,
-              bottom: 7.0,
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Enter your password",
-                hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                fillColor: Color(0xfff9f9f9),
-                filled: true,
-                focusColor: Color(0xfff9f9f9),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.visibility_off_outlined),
-                  onPressed: () => {},
-                ),
               ),
             ),
           ),
@@ -140,7 +77,7 @@ class _BodyState extends State<Body> {
                 ),
                 onPressed: () {},
                 child: Text(
-                  'Sign Up',
+                  'Sign In',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold, // Color del texto
@@ -161,7 +98,7 @@ class _BodyState extends State<Body> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: ' Sign In',
+                      text: ' Sign Up',
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -172,7 +109,7 @@ class _BodyState extends State<Body> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Login()),
+                                builder: (context) => const Register()),
                           );
                         },
                     )
@@ -180,39 +117,6 @@ class _BodyState extends State<Body> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-// TODO: Impruve this code in order to be reusable
-class InputTextField extends StatelessWidget {
-  const InputTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 7.0,
-        bottom: 7.0,
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: "Enter your password",
-          hintStyle: TextStyle(fontWeight: FontWeight.bold),
-          fillColor: Color(0xfff9f9f9),
-          filled: true,
-          focusColor: Color(0xfff9f9f9),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.visibility_off_outlined),
-            onPressed: () => {},
-          ),
-        ),
       ),
     );
   }
