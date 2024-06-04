@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/views/add_product_page.dart';
+import 'package:repuestazo/views/addproduct/addproduct.dart';
 import 'package:repuestazo/views/notification_page.dart';
 import 'package:repuestazo/views/products_page.dart';
 import 'package:repuestazo/views/profile_page.dart';
@@ -14,9 +14,9 @@ class HomePageState extends State<HomePage>{
   int currentIndex = 0;
 
   final List<Widget> pages = [
-    ShoppingCartPage(),
     ProductsPage(),
-    AddProduct(),
+    AddProductScreen(),
+    ShoppingCartPage(),
     ProfilePage()
   ];
 
@@ -81,15 +81,7 @@ class HomePageState extends State<HomePage>{
           onTap: onTabTapped,
           selectedItemColor: Colors.black,
           items: const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.black
-                ),
-                label: "Carrito de compras"
-            ),
-
-            BottomNavigationBarItem(
+                        BottomNavigationBarItem(
                 icon: Icon(
                     Icons.shopping_bag,
                     color: Colors.black
@@ -102,7 +94,15 @@ class HomePageState extends State<HomePage>{
                     Icons.add,
                     color: Colors.black
                 ),
-                label: "Public producto"
+                label: "Agregar Producto"
+            ),
+
+            BottomNavigationBarItem(
+                icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.black
+                ),
+                label: "Carrito de compras"
             ),
 
             BottomNavigationBarItem(
