@@ -14,11 +14,11 @@ class UserList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Make_ID'] = this.makeID;
-    data['Make_Name'] = this.makeName;
-    data['Model_ID'] = this.modelID;
-    data['Model_Name'] = this.modelName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Make_ID'] = makeID;
+    data['Make_Name'] = makeName;
+    data['Model_ID'] = modelID;
+    data['Model_Name'] = modelName;
     return data;
   }
 }
