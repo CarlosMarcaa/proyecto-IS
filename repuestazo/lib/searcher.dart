@@ -3,29 +3,36 @@ import 'package:flutter/material.dart';
 import 'API.dart';
 import 'Usermodel.dart';
 
-class Searcher extends SearchDelegate{
+class Searcher extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
-   return [
-    IconButton(icon: Icon(Icons.close), onPressed: (){
-      query = "";
-    })
-   ];
+    return [
+      IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            query = "";
+          })
+    ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
-      Navigator.pop(context);
-    } );
+    return IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+        onPressed: () {
+          Navigator.pop(context);
+        });
   }
 
   FetchUser _userList = FetchUser();
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container(
-        child: FutureBuilder<List<UserList>>(
+    return Stack(
+      // Use a Stack to position the button on top
+      children: [
+        Container(
+          child: FutureBuilder<List<UserList>>(
             future: _userList.getUserList(query: query),
             builder: (context, snapshot) {
               var data = snapshot.data;
@@ -52,8 +59,9 @@ class Searcher extends SearchDelegate{
                               child: Text(
                                 'ID',
                                 style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -64,8 +72,9 @@ class Searcher extends SearchDelegate{
                               Text(
                                 '${data?[index].name}',
                                 style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               Text('${data?[index].level}'),
                             ],
@@ -76,15 +85,42 @@ class Searcher extends SearchDelegate{
                   );
                 },
               );
-            }),
-      );
+            },
+          ),
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              print('¡Botón flotante presionado!');
+            },
+            child: const Icon(Icons.filter_alt),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-     return Center(
-      child: Text('Search car parts, products and more...'),
-      );
+    return Stack(
+      // Use a Stack to position the button on top
+      children: [
+        Center(
+          child: Text('Search car parts, products and more'),
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              print('¡Botón flotante presionado!');
+            },
+            child: const Icon(Icons.filter_alt),
+          ),
+        ),
+      ],
+    );
   }
-
 }
