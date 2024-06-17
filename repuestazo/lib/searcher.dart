@@ -115,7 +115,7 @@ class Searcher extends SearchDelegate {
           right: 20.0,
           child: FloatingActionButton(
             onPressed: () {
-              print('¡Botón flotante presionado!');
+              showPopup(context);
             },
             child: const Icon(Icons.filter_alt),
           ),
@@ -123,4 +123,62 @@ class Searcher extends SearchDelegate {
       ],
     );
   }
+}
+
+void showPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Center(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'This is the popup title!',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10.0),
+                const Text(
+                  'This is the popup content. You can add more widgets, text, or custom UI elements here.',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Perform an action when the "Yes" button is pressed
+                        print('Yes button pressed!');
+                        Navigator.pop(context); // Close the popup
+                      },
+                      child: const Text('Yes'),
+                    ),
+                    const SizedBox(width: 10.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Perform an action when the "No" button is pressed
+                        print('No button pressed!');
+                        Navigator.pop(context); // Close the popup
+                      },
+                      child: const Text('No'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
