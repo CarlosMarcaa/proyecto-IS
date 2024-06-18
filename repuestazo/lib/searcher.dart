@@ -47,7 +47,7 @@ class Searcher extends SearchDelegate {
                 itemBuilder: (context, index) {
                   if (selectedLevel != null &&
                       data![index].level != selectedLevel) {
-                    return Container(); // Hide the item
+                    return Container();
                   }
                   return Card(
                     child: ListTile(
@@ -181,11 +181,6 @@ class Searcher extends SearchDelegate {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Apply filter based on selected level
-                          if (selectedLevel != null) {
-                            // Update your search query with the selected level
-                            query = 'level:$selectedLevel';
-                          }
                           Navigator.pop(context); // Close the popup
                         },
                         child: const Text('Filtrar'),
@@ -195,11 +190,11 @@ class Searcher extends SearchDelegate {
                         onPressed: () {
                           // Reset selection and close the popup
 
-                          query = 'level:$selectedLevel';
+                          selectedLevel = null;
 
                           Navigator.pop(context);
                         },
-                        child: const Text('Cancelar'),
+                        child: const Text('Borrar'),
                       ),
                     ],
                   ),
