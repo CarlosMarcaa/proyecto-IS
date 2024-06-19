@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:repuestazo/Homepage.dart';
-import 'package:repuestazo/views/home_page.dart';
+import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/register/register.dart';
 
 class Body extends StatefulWidget {
@@ -213,6 +213,7 @@ class _BodyState extends State<Body> {
           ],
         ),
       ),
+
     );
   }
 }

@@ -23,8 +23,7 @@ class CategoryState extends State<Category>{
   Widget build(BuildContext context){
     return GestureDetector(
       onTap: (){
-        //Realizar funcion de navegar a la seccion de la categoria
-        print(nameCategory);
+
       },
       child: Container(
         width: 150,
