@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/views/addproduct/addproduct.dart';
 import 'package:repuestazo/views/login/login.dart';
-import 'package:repuestazo/views/notification_page.dart';
-import 'package:repuestazo/views/products_page.dart';
-import 'package:repuestazo/views/profile_page.dart';
-import 'package:repuestazo/views/shopping_cart_page.dart';
+import 'package:repuestazo/views/notification/notification.dart';
+import 'package:repuestazo/views/products/products.dart';
+import 'package:repuestazo/views/profile/profile.dart';
+import 'package:repuestazo/views/shoppingcart/shopping_cart.dart';
 
 class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
