@@ -92,9 +92,9 @@ class _BodyState extends State<Body> {
                 decoration: InputDecoration(
                   hintText: "Enter Email",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                  fillColor: Color(0xfff9f9f9),
+                  fillColor: Color(0xFFF1F1F1),
                   filled: true,
-                  focusColor: Color(0xfff9f9f9),
+                  focusColor: Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
@@ -122,9 +122,9 @@ class _BodyState extends State<Body> {
                 decoration: InputDecoration(
                   hintText: "Enter password",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                  fillColor: Color(0xfff9f9f9),
+                  fillColor: Color(0xFFF1F1F1),
                   filled: true,
-                  focusColor: Color(0xfff9f9f9),
+                  focusColor: Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),

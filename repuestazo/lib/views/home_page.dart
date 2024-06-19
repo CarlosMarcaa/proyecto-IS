@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/views/addproduct/addproduct.dart';
+import 'package:repuestazo/views/login/login.dart';
 import 'package:repuestazo/views/notification_page.dart';
 import 'package:repuestazo/views/products_page.dart';
 import 'package:repuestazo/views/profile_page.dart';
@@ -32,10 +34,25 @@ class HomePageState extends State<HomePage> {
       });
     }
 
+    void _logout(BuildContext context) async {
+      await FirebaseAuth.instance.signOut();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    }
+
     return Scaffold(
       key: scaffoldKey,
       drawer: Drawer(
-        child: ListView(),
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.logout_outlined),
+              title: Text("Logout"),
+              onTap: () => _logout(context),
+            )
+          ],
+        ),
       ),
       appBar: AppBar(
         leading: IconButton(
