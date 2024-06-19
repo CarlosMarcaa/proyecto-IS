@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/models/category.dart';
 import 'package:repuestazo/searcher.dart';
-import 'package:repuestazo/views/login/login.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPageState createState() => ProductsPageState();
