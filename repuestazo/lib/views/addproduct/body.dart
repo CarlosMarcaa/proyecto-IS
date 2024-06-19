@@ -14,6 +14,15 @@ class AddProductFormState extends State<AddProductForm> {
   String? _description;
   double? _price;
 
+  final List<String> _classifications = [
+    'Motor',
+    'Transmisión',
+    'Suspensión',
+    'Frenos',
+    'Eléctrico',
+    'Interior',
+    'Exterior',
+  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -59,16 +68,28 @@ class AddProductFormState extends State<AddProductForm> {
                   _partType = value;
                 },
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Descripción'),
+              DropdownButtonFormField<String>(
+                decoration:
+                    InputDecoration(labelText: 'Clasificación del Repuesto'),
+                items: _classifications.map((String classification) {
+                  return DropdownMenuItem<String>(
+                    value: classification,
+                    child: Text(classification),
+                  );
+                }).toList(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa una descripción';
+                    return 'Por favor selecciona una clasificación';
                   }
                   return null;
                 },
+                onChanged: (newValue) {
+                  setState(() {
+                    _partType = newValue!;
+                  });
+                },
                 onSaved: (value) {
-                  _description = value;
+                  _partType = value!;
                 },
               ),
               TextFormField(
