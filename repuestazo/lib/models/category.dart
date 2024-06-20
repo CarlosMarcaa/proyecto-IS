@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repuestazo/views/category_view/category_view.dart';
 
 //Clase para crear Categorias en la pagina principal (Stateful)
 class Category extends StatefulWidget{
@@ -23,7 +24,10 @@ class CategoryState extends State<Category>{
   Widget build(BuildContext context){
     return GestureDetector(
       onTap: (){
-
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CategoryView())
+        );
       },
       child: Container(
         width: 150,
