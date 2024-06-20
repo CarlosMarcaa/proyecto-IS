@@ -13,6 +13,9 @@ class ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil de Usuario'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Body(),
     );
@@ -27,6 +30,9 @@ class Body extends StatefulWidget {
 class BodyState extends State<Body> {
   User? user;
   Map<String, dynamic>? userData;
+  bool isEditing = false;
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -43,6 +49,28 @@ class BodyState extends State<Body> {
           .get();
       setState(() {
         userData = snapshot.data() as Map<String, dynamic>?;
+        phoneController.text = userData?['phone'] ?? '';
+        descriptionController.text = userData?['description'] ?? '';
+      });
+    }
+  }
+
+  Future<void> saveChanges() async {
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .update({
+        'phone': phoneController.text,
+        if (userData?['userType'] == 'Workshop')
+          'description': descriptionController.text,
+      });
+      setState(() {
+        userData!['phone'] = phoneController.text;
+        if (userData!['userType'] == 'Workshop') {
+          userData!['description'] = descriptionController.text;
+        }
+        isEditing = false;
       });
     }
   }
@@ -56,26 +84,100 @@ class BodyState extends State<Body> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(36.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (userData!['userType'] == 'Workshop') ...[
+            SizedBox(height: 16),
+            _buildEditableField('Descripción', descriptionController,
+                maxLines: 5),
+          ],
           Text(
-            'Email: ${userData!['email']}',
-            style: TextStyle(fontSize: 18),
+            'Email',
+            style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[800],
+                fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 16),
           Text(
-            'Teléfono: ${userData!['phone']}',
-            style: TextStyle(fontSize: 18),
+            '   ${userData!['email']}',
+            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 16),
+          _buildEditableField('Teléfono:', phoneController),
+          SizedBox(height: 16),
           Text(
-            'Tipo de Usuario: ${userData!['userType']}',
-            style: TextStyle(fontSize: 18),
+            'Tipo de Usuario',
+            style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[800],
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          Text(
+            '   ${userData!['userType']}',
+            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+          ),
+          SizedBox(height: 16),
+          Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              onPressed: isEditing
+                  ? saveChanges
+                  : () => setState(() => isEditing = true),
+              child: Text(isEditing ? 'Guardar Cambios' : 'Editar'),
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildEditableField(String label, TextEditingController controller,
+      {int maxLines = 1}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        isEditing
+            ? TextField(
+                controller: controller,
+                maxLines: maxLines,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  hintText: label,
+                ),
+              )
+            : Container(
+                padding: EdgeInsets.all(12),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.grey[200],
+                ),
+                child: Text(
+                  controller.text,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                ),
+              ),
+      ],
     );
   }
 }

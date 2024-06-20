@@ -67,7 +67,9 @@ class BodyState extends State<Body> {
           Center(
             child: TextButton.icon(
               style: TextButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.black),
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.black,
+              ),
               icon: Icon(Icons.add),
               label: Text('Añadir al carrito'),
               onPressed: () {},
