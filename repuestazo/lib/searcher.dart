@@ -152,29 +152,41 @@ class Searcher extends SearchDelegate {
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10.0),
-                  DropdownButton<String>(
-                    value: selectedLevel,
-                    items: const [
-                      DropdownMenuItem<String>(
-                        value: 'in Training',
-                        child: Text('in Training'),
+
+                  //Primer filtro
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Select Level:',
+                        style: TextStyle(fontSize: 16.0),
                       ),
-                      DropdownMenuItem<String>(
-                        value: 'Rookie',
-                        child: Text('Rookie'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'Champion',
-                        child: Text('Champion'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'Ultimate',
-                        child: Text('Ultimate'),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: selectedLevel,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'in Training',
+                            child: Text('in Training'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Rookie',
+                            child: Text('Rookie'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Champion',
+                            child: Text('Champion'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Ultimate',
+                            child: Text('Ultimate'),
+                          ),
+                        ],
+                        onChanged: (newLevel) {
+                          selectedLevel = newLevel;
+                        },
                       ),
                     ],
-                    onChanged: (newLevel) {
-                      selectedLevel = newLevel;
-                    },
                   ),
                   const SizedBox(height: 20.0),
                   Row(
@@ -182,15 +194,13 @@ class Searcher extends SearchDelegate {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context); // Close the popup
+                          Navigator.pop(context);
                         },
                         child: const Text('Filtrar'),
                       ),
                       const SizedBox(width: 10.0),
                       ElevatedButton(
                         onPressed: () {
-                          // Reset selection and close the popup
-
                           selectedLevel = null;
 
                           Navigator.pop(context);
