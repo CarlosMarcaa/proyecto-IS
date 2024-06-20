@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '648824532681',
     projectId: 'repuestazo-fb781',
     storageBucket: 'repuestazo-fb781.appspot.com',
+    androidClientId: '648824532681-9c2gd4nl1cnh71toirtaco4aav6bqddc.apps.googleusercontent.com',
     iosClientId: '648824532681-9dl2o02pa7mrsfi6i4oourds4osrjlmf.apps.googleusercontent.com',
     iosBundleId: 'com.example.repuestazo',
   );
@@ -73,6 +74,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '648824532681',
     projectId: 'repuestazo-fb781',
     storageBucket: 'repuestazo-fb781.appspot.com',
+    androidClientId: '648824532681-9c2gd4nl1cnh71toirtaco4aav6bqddc.apps.googleusercontent.com',
     iosClientId: '648824532681-9dl2o02pa7mrsfi6i4oourds4osrjlmf.apps.googleusercontent.com',
     iosBundleId: 'com.example.repuestazo',
   );
@@ -85,4 +87,5 @@ class DefaultFirebaseOptions {
     authDomain: 'repuestazo-fb781.firebaseapp.com',
     storageBucket: 'repuestazo-fb781.appspot.com',
   );
+
 }
