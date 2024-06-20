@@ -137,8 +137,8 @@ class Searcher extends SearchDelegate {
           child: Material(
             color: Colors.transparent,
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.white,
@@ -153,12 +153,12 @@ class Searcher extends SearchDelegate {
                   ),
                   const SizedBox(height: 10.0),
 
-                  //Primer filtro
+                  //Filtro marca
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Select Level:',
+                        'Marca:',
                         style: TextStyle(fontSize: 16.0),
                       ),
                       const SizedBox(width: 10.0),
@@ -188,7 +188,83 @@ class Searcher extends SearchDelegate {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 10.0),
+
+                  //Filtro modelo
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Modelo:',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: selectedLevel,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'in Training',
+                            child: Text('in Training'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Rookie',
+                            child: Text('Rookie'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Champion',
+                            child: Text('Champion'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Ultimate',
+                            child: Text('Ultimate'),
+                          ),
+                        ],
+                        onChanged: (newLevel) {
+                          selectedLevel = newLevel;
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 10.0),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Año:',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: selectedLevel,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'in Training',
+                            child: Text('in Training'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Rookie',
+                            child: Text('Rookie'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Champion',
+                            child: Text('Champion'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Ultimate',
+                            child: Text('Ultimate'),
+                          ),
+                        ],
+                        onChanged: (newLevel) {
+                          selectedLevel = newLevel;
+                        },
+                      ),
+                    ],
+                  ),
+
                   const SizedBox(height: 20.0),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
