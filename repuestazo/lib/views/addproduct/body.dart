@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddProductForm extends StatefulWidget {
   @override
@@ -33,29 +34,33 @@ class _AddProductFormState extends State<AddProductForm> {
       });
 
       try {
-        await FirebaseFirestore.instance.collection('products').add({
-          'name': _nameController.text,
-          'price': double.parse(_priceController.text),
-          'description': _descriptionController.text,
-          'brand': _brandController.text,
-          'model': _modelController.text,
-          'category': _selectedCategory,
-        });
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await FirebaseFirestore.instance.collection('products').add({
+            'name': _nameController.text,
+            'price': double.parse(_priceController.text),
+            'description': _descriptionController.text,
+            'brand': _brandController.text,
+            'model': _modelController.text,
+            'category': _selectedCategory,
+            'userId': user.uid, // Almacena el ID del usuario
+          });
 
-        // Mostrar mensaje de éxito
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Producto agregado exitosamente')),
-        );
+          // Mostrar mensaje de éxito
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Producto agregado exitosamente')),
+          );
 
-        // Limpiar campos del formulario
-        _nameController.clear();
-        _priceController.clear();
-        _descriptionController.clear();
-        _brandController.clear();
-        _modelController.clear();
-        setState(() {
-          _selectedCategory = null;
-        });
+          // Limpiar campos del formulario
+          _nameController.clear();
+          _priceController.clear();
+          _descriptionController.clear();
+          _brandController.clear();
+          _modelController.clear();
+          setState(() {
+            _selectedCategory = null;
+          });
+        }
       } catch (error) {
         // Mostrar mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
