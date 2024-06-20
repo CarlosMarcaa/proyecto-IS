@@ -5,6 +5,7 @@ import 'Usermodel.dart';
 
 class Searcher extends SearchDelegate {
   String? selectedLevel;
+  String? part;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -30,6 +31,7 @@ class Searcher extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    int cont;
     return Stack(
       children: [
         Container(
@@ -98,7 +100,7 @@ class Searcher extends SearchDelegate {
           right: 20.0,
           child: FloatingActionButton(
             onPressed: () {
-              print('¡Botón flotante presionado!');
+              showPopup(context);
             },
             child: const Icon(Icons.filter_alt),
           ),
@@ -128,7 +130,8 @@ class Searcher extends SearchDelegate {
     );
   }
 
-  void showPopup(BuildContext context) {
+  @override
+  Widget? showPopup(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -136,8 +139,8 @@ class Searcher extends SearchDelegate {
           child: Material(
             color: Colors.transparent,
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.white,
@@ -151,45 +154,149 @@ class Searcher extends SearchDelegate {
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10.0),
-                  DropdownButton<String>(
-                    value: selectedLevel,
-                    items: const [
-                      DropdownMenuItem<String>(
-                        value: 'in Training',
-                        child: Text('in Training'),
+
+                  //Filtro marca
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Marca:',
+                        style: TextStyle(fontSize: 16.0),
                       ),
-                      DropdownMenuItem<String>(
-                        value: 'Rookie',
-                        child: Text('Rookie'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'Champion',
-                        child: Text('Champion'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'Ultimate',
-                        child: Text('Ultimate'),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: selectedLevel,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'in Training',
+                            child: Text('in Training'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Rookie',
+                            child: Text('Rookie'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Champion',
+                            child: Text('Champion'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Ultimate',
+                            child: Text('Ultimate'),
+                          ),
+                        ],
+                        onChanged: (newLevel) {
+                          selectedLevel = newLevel;
+                          Navigator.pop(context);
+                          showPopup(context);
+                        },
                       ),
                     ],
-                    onChanged: (newLevel) {
-                      selectedLevel = newLevel;
-                    },
                   ),
+                  const SizedBox(height: 10.0),
+
+                  //Filtro Tipo de pieza
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Pieza:',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: part,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'Motor',
+                            child: Text('Motor'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Transmisión',
+                            child: Text('Transmisión'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Suspensión',
+                            child: Text('Suspensión'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Frenos',
+                            child: Text('Frenos'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Eléctrico',
+                            child: Text('Eléctrico'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Interior',
+                            child: Text('Interior'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Exterior',
+                            child: Text('Exterior'),
+                          ),
+                        ],
+                        onChanged: (newPart) {
+                          part = newPart;
+                          Navigator.pop(context);
+                          showPopup(context);
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 10.0),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Año:',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      const SizedBox(width: 10.0),
+                      DropdownButton<String>(
+                        value: selectedLevel,
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: 'in Training',
+                            child: Text('in Training'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Rookie',
+                            child: Text('Rookie'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Champion',
+                            child: Text('Champion'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Ultimate',
+                            child: Text('Ultimate'),
+                          ),
+                        ],
+                        onChanged: (newLevel) {
+                          selectedLevel = newLevel;
+                          Navigator.pop(context);
+                          showPopup(context);
+                        },
+                      ),
+                    ],
+                  ),
+
                   const SizedBox(height: 20.0),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context); // Close the popup
+                          Navigator.pop(context);
                         },
                         child: const Text('Filtrar'),
                       ),
                       const SizedBox(width: 10.0),
                       ElevatedButton(
                         onPressed: () {
-                          // Reset selection and close the popup
-
                           selectedLevel = null;
 
                           Navigator.pop(context);
@@ -207,6 +314,7 @@ class Searcher extends SearchDelegate {
     );
   }
 }
+
 
 
 
