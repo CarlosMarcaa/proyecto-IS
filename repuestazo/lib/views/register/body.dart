@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:repuestazo/views/home_page/home_page.dart';
+import 'package:repuestazo/views/client_home_page/client_home_page.dart';
 import 'package:repuestazo/views/login/login.dart';
 
 class Body extends StatefulWidget {
@@ -57,10 +58,20 @@ class _BodyState extends State<Body> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('User registered successfully')),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+
+        if (_selectedUserType == 'Client') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ClientHomePage()),
+          );
+        } else if (_selectedUserType == 'Workshop') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          throw Exception('UserType no reconocido');
+        }
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.message ?? 'Registration failed')),
