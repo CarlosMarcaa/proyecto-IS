@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:repuestazo/views/client_home_page/client_home_page.dart';
 import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/register/register.dart';
 
@@ -44,23 +47,77 @@ class _BodyState extends State<Body> {
           password: _passwordController.text.trim(),
         );
 
+        User? user = userCredential.user;
+        if (user != null) {
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .get();
+
+          if (userDoc.exists) {
+            String userType = userDoc['userType'];
+            if (userType == 'Client') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ClientHomePage()),
+              );
+            } else if (userType == 'Workshop') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            } else {
+              throw Exception('UserType no reconocido');
+            }
+          } else {
+            throw Exception('Datos del usuario no existen');
+          }
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Login successful')),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.message ?? 'Login failed')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
         );
       } finally {
         setState(() {
           _isLoading = false;
         });
       }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In successful')),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In failed: $e')),
+      );
     }
   }
 
@@ -179,6 +236,17 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
+            Center(
+              child: TextButton.icon(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black,
+                ),
+                icon: Icon(Icons.login),
+                label: Text('Sign in with Google'),
+                onPressed: _signInWithGoogle,
+              ),
+            ),
+            SizedBox(height: 20),
             Center(
               child: RichText(
                 textAlign: TextAlign.center,
