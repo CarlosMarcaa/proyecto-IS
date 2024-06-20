@@ -1,142 +1,164 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class AddProductForm extends StatefulWidget {
   @override
-  AddProductFormState createState() => AddProductFormState();
+  _AddProductFormState createState() => _AddProductFormState();
 }
 
-class AddProductFormState extends State<AddProductForm> {
+class _AddProductFormState extends State<AddProductForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _brand;
-  String? _model;
-  String? _partType;
-  String? _description;
-  double? _price;
+  final _nameController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _brandController = TextEditingController();
+  final _modelController = TextEditingController();
+  String? _selectedCategory;
+  bool _isLoading = false;
 
-  final List<String> _classifications = [
+  final List<String> _categories = [
     'Motor',
     'Transmisión',
     'Suspensión',
     'Frenos',
     'Eléctrico',
     'Interior',
-    'Exterior',
+    'Exterior'
   ];
+
+  Future<void> _addProduct() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        await FirebaseFirestore.instance.collection('products').add({
+          'name': _nameController.text,
+          'price': double.parse(_priceController.text),
+          'description': _descriptionController.text,
+          'brand': _brandController.text,
+          'model': _modelController.text,
+          'category': _selectedCategory,
+        });
+
+        // Mostrar mensaje de éxito
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Producto agregado exitosamente')),
+        );
+
+        // Limpiar campos del formulario
+        _nameController.clear();
+        _priceController.clear();
+        _descriptionController.clear();
+        _brandController.clear();
+        _modelController.clear();
+        setState(() {
+          _selectedCategory = null;
+        });
+      } catch (error) {
+        // Mostrar mensaje de error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al agregar producto: $error')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Marca del carro'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa la marca del carro';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _brand = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Modelo del carro'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa el modelo del carro';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _model = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Tipo de pieza'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa el tipo de pieza';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _partType = value;
-                },
-              ),
-              DropdownButtonFormField<String>(
-                decoration:
-                    InputDecoration(labelText: 'Clasificación del Repuesto'),
-                items: _classifications.map((String classification) {
-                  return DropdownMenuItem<String>(
-                    value: classification,
-                    child: Text(classification),
-                  );
-                }).toList(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor selecciona una clasificación';
-                  }
-                  return null;
-                },
-                onChanged: (newValue) {
-                  setState(() {
-                    _partType = newValue!;
-                  });
-                },
-                onSaved: (value) {
-                  _partType = value!;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Precio'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa el precio';
-                  }
-                  if (double.tryParse(value!) == null) {
-                    return 'Por favor ingresa un número válido';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _price = value != null ? double.tryParse(value) : null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _addProduct,
-                child: Text('Agregar Producto'),
-              ),
-            ],
-          ),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Nombre'),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese un nombre';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _priceController,
+              decoration: InputDecoration(labelText: 'Precio'),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese un precio';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(labelText: 'Descripción'),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese una descripción';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _brandController,
+              decoration: InputDecoration(labelText: 'Marca del Carro'),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese la marca del carro';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _modelController,
+              decoration: InputDecoration(labelText: 'Modelo del Carro'),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese el modelo del carro';
+                }
+                return null;
+              },
+            ),
+            DropdownButtonFormField<String>(
+              value: _selectedCategory,
+              decoration: InputDecoration(labelText: 'Clasificación'),
+              items: _categories.map((category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedCategory = newValue;
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Por favor seleccione una clasificación';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _addProduct,
+                    child: Text('Agregar Producto'),
+                  ),
+          ],
         ),
       ),
     );
-  }
-
-  Future<void> _addProduct() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-
-      await FirebaseFirestore.instance.collection('products').add({
-        'brand': _brand,
-        'model': _model,
-        'partType': _partType,
-        'description': _description,
-        'price': _price,
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Producto agregado exitosamente')),
-      );
-
-      _formKey.currentState?.reset();
-    }
   }
 }

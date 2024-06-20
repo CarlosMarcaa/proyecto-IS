@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'body.dart';
+import 'body.dart'; // Asegúrate de tener esta importación
 
 class AddProductScreen extends StatelessWidget {
   @override
