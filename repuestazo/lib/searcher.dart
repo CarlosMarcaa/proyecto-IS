@@ -31,6 +31,7 @@ class Searcher extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    int cont;
     return Stack(
       children: [
         Container(
@@ -185,6 +186,8 @@ class Searcher extends SearchDelegate {
                         ],
                         onChanged: (newLevel) {
                           selectedLevel = newLevel;
+                          Navigator.pop(context);
+                          showPopup(context);
                         },
                       ),
                     ],
@@ -234,6 +237,8 @@ class Searcher extends SearchDelegate {
                         ],
                         onChanged: (newPart) {
                           part = newPart;
+                          Navigator.pop(context);
+                          showPopup(context);
                         },
                       ),
                     ],
@@ -271,6 +276,8 @@ class Searcher extends SearchDelegate {
                         ],
                         onChanged: (newLevel) {
                           selectedLevel = newLevel;
+                          Navigator.pop(context);
+                          showPopup(context);
                         },
                       ),
                     ],
