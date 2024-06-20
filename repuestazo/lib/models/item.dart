@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:repuestazo/views/product_view/body.dart';
 import 'package:repuestazo/views/product_view/product_view.dart';
 
 class Item extends StatefulWidget{
@@ -32,7 +33,15 @@ class ItemState extends State<Item>{
       onTap: () => {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Produc)
+          MaterialPageRoute(builder: (context) => ProductView(
+            brand: widget.brand,
+            category: widget.category,
+            description: widget.description,
+            model: widget.model,
+            name: widget.name,
+            price: widget.price,
+            userId: widget.userId
+          ))
         )
       },
       child: Container(
