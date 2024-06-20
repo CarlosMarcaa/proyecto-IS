@@ -1,14 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/models/category.dart';
-import "package:repuestazo/views/home_page/home_page.dart";
-import "package:repuestazo/models/item.dart";
+import 'package:repuestazo/views/category_view/body.dart';
 
 class CategoryView extends StatefulWidget{
+  final String category;
+
+  const CategoryView({Key? key, required this.category}) : super(key: key);
+
   CategoryViewState createState() => CategoryViewState();
 }
 
 class CategoryViewState extends State<CategoryView>{
+  late String category;
+
+  void initState(){
+    super.initState();
+    category = widget.category;
+  }
+
 
   Widget build(BuildContext context){
 
@@ -49,25 +58,7 @@ class CategoryViewState extends State<CategoryView>{
             },
           ),
         ),
-
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                Item(
-                  name: "Motor de corolla 1.6",
-                  brand: "Toyota",
-                  Description: "toyota xd",
-                  model: "Corolla",
-                  partType: "Motor",
-                  category: "Motor",
-                  price: 1000,
-                )
-              ],
-            ),
-          ),
-        )
+        body: Body(category: category)
       ),
     );
   }
