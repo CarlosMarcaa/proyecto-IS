@@ -98,7 +98,7 @@ class Searcher extends SearchDelegate {
           right: 20.0,
           child: FloatingActionButton(
             onPressed: () {
-              print('¡Botón flotante presionado!');
+              showPopup(context);
             },
             child: const Icon(Icons.filter_alt),
           ),
@@ -128,7 +128,8 @@ class Searcher extends SearchDelegate {
     );
   }
 
-  void showPopup(BuildContext context) {
+  @override
+  Widget? showPopup(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
