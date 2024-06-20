@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/models/category.dart';
 import 'package:repuestazo/searcher.dart';
-import 'package:repuestazo/views/login/login.dart';
 
 class ProductsPage extends StatefulWidget {
   ProductsPageState createState() => ProductsPageState();
@@ -24,22 +23,7 @@ class ProductsPageState extends State<ProductsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            // Center(
-            //   child: Container(
-            //     width: screenWidth * 0.8,
-            //     decoration: BoxDecoration(
-            //         border: Border.all(color: Colors.grey),
-            //         borderRadius: BorderRadius.circular(30)),
-            //     child: const TextField(
-            //       decoration: InputDecoration(
-            //           border: InputBorder.none,
-            //           labelText: "   Buscar repuestos, productos y mas...",
-            //           labelStyle: TextStyle(fontSize: 12)),
-            //     ),
-            //   ),
-            // ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             const Center(
               child: Wrap(
                 spacing: 15,

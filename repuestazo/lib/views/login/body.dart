@@ -1,8 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:repuestazo/Homepage.dart';
-import 'package:repuestazo/views/home_page.dart';
+import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/register/register.dart';
 
 class Body extends StatefulWidget {
@@ -51,7 +50,7 @@ class _BodyState extends State<Body> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) =>  HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -93,9 +92,9 @@ class _BodyState extends State<Body> {
                 decoration: InputDecoration(
                   hintText: "Enter Email",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                  fillColor: Color(0xfff9f9f9),
+                  fillColor: Color(0xFFF1F1F1),
                   filled: true,
-                  focusColor: Color(0xfff9f9f9),
+                  focusColor: Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
@@ -123,9 +122,9 @@ class _BodyState extends State<Body> {
                 decoration: InputDecoration(
                   hintText: "Enter password",
                   hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                  fillColor: Color(0xfff9f9f9),
+                  fillColor: Color(0xFFF1F1F1),
                   filled: true,
-                  focusColor: Color(0xfff9f9f9),
+                  focusColor: Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none),
