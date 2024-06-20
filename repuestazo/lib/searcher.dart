@@ -5,6 +5,7 @@ import 'Usermodel.dart';
 
 class Searcher extends SearchDelegate {
   String? selectedLevel;
+  String? part;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -190,37 +191,49 @@ class Searcher extends SearchDelegate {
                   ),
                   const SizedBox(height: 10.0),
 
-                  //Filtro modelo
+                  //Filtro Tipo de pieza
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Modelo:',
+                        'Pieza:',
                         style: TextStyle(fontSize: 16.0),
                       ),
                       const SizedBox(width: 10.0),
                       DropdownButton<String>(
-                        value: selectedLevel,
+                        value: part,
                         items: const [
                           DropdownMenuItem<String>(
-                            value: 'in Training',
-                            child: Text('in Training'),
+                            value: 'Motor',
+                            child: Text('Motor'),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Rookie',
-                            child: Text('Rookie'),
+                            value: 'Transmisión',
+                            child: Text('Transmisión'),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Champion',
-                            child: Text('Champion'),
+                            value: 'Suspensión',
+                            child: Text('Suspensión'),
                           ),
                           DropdownMenuItem<String>(
-                            value: 'Ultimate',
-                            child: Text('Ultimate'),
+                            value: 'Frenos',
+                            child: Text('Frenos'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Eléctrico',
+                            child: Text('Eléctrico'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Interior',
+                            child: Text('Interior'),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'Exterior',
+                            child: Text('Exterior'),
                           ),
                         ],
-                        onChanged: (newLevel) {
-                          selectedLevel = newLevel;
+                        onChanged: (newPart) {
+                          part = newPart;
                         },
                       ),
                     ],
