@@ -2,13 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AddProductForm extends StatefulWidget {
+class ModifyProductForm extends StatefulWidget {
   @override
-  _AddProductFormState createState() => _AddProductFormState();
+  _ModifyProductFormState createState() => _ModifyProductFormState();
 }
 
-class _AddProductFormState extends State<AddProductForm> {
+class _ModifyProductFormState extends State<ModifyProductForm> {
   final _formKey = GlobalKey<FormState>();
+  final _productIdController = TextEditingController();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -27,7 +28,7 @@ class _AddProductFormState extends State<AddProductForm> {
     'Exterior'
   ];
 
-  Future<void> _addProduct() async {
+  Future<void> _modifyProduct() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -36,35 +37,38 @@ class _AddProductFormState extends State<AddProductForm> {
       try {
         User? user = FirebaseAuth.instance.currentUser;
         if (user != null) {
-          await FirebaseFirestore.instance.collection('products').add({
-            'name': _nameController.text,
-            'price': double.parse(_priceController.text),
-            'description': _descriptionController.text,
-            'brand': _brandController.text,
-            'model': _modelController.text,
-            'category': _selectedCategory,
-            'userId': user.uid, // Almacena el ID del usuario
-          });
+          DocumentSnapshot doc = await FirebaseFirestore.instance
+              .collection('products')
+              .doc(_productIdController.text)
+              .get();
 
-          // Mostrar mensaje de éxito
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Producto agregado exitosamente')),
-          );
+          if (doc.exists && doc['userId'] == user.uid) {
+            await FirebaseFirestore.instance
+                .collection('products')
+                .doc(_productIdController.text)
+                .update({
+              'name': _nameController.text,
+              'price': double.parse(_priceController.text),
+              'description': _descriptionController.text,
+              'brand': _brandController.text,
+              'model': _modelController.text,
+              'category': _selectedCategory,
+            });
 
-          // Limpiar campos del formulario
-          _nameController.clear();
-          _priceController.clear();
-          _descriptionController.clear();
-          _brandController.clear();
-          _modelController.clear();
-          setState(() {
-            _selectedCategory = null;
-          });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Producto modificado exitosamente')),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content:
+                      Text('No tienes permiso para modificar este producto')),
+            );
+          }
         }
       } catch (error) {
-        // Mostrar mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al agregar producto: $error')),
+          SnackBar(content: Text('Error al modificar producto: $error')),
         );
       } finally {
         setState(() {
@@ -75,6 +79,17 @@ class _AddProductFormState extends State<AddProductForm> {
   }
 
   @override
+  void dispose() {
+    _productIdController.dispose();
+    _nameController.dispose();
+    _priceController.dispose();
+    _descriptionController.dispose();
+    _brandController.dispose();
+    _modelController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -82,6 +97,16 @@ class _AddProductFormState extends State<AddProductForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
+            TextFormField(
+              controller: _productIdController,
+              decoration: InputDecoration(labelText: 'ID del Producto'),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Por favor ingrese el ID del producto';
+                }
+                return null;
+              },
+            ),
             TextFormField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Nombre'),
@@ -158,8 +183,8 @@ class _AddProductFormState extends State<AddProductForm> {
             _isLoading
                 ? CircularProgressIndicator()
                 : ElevatedButton(
-                    onPressed: _addProduct,
-                    child: Text('Agregar Producto'),
+                    onPressed: _modifyProduct,
+                    child: Text('Modificar Producto'),
                   ),
           ],
         ),
