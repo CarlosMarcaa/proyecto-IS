@@ -246,6 +246,7 @@ class _BodyState extends State<Body> {
                 onPressed: _signInWithGoogle,
               ),
             ),
+            SizedBox(height: 20),
             Center(
               child: RichText(
                 textAlign: TextAlign.center,

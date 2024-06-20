@@ -87,171 +87,175 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(38.0),
+      padding: const EdgeInsets.symmetric(horizontal: 38.0),
       child: Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Create an Account",
-              style: TextStyle(
-                fontSize: 28,
-                fontFamily: "Inter",
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            InputTextField(
-              hintText: "Enter Email",
-              controller: _emailController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                if (!emailRegex.hasMatch(value)) {
-                  return 'Please enter a valid email address';
-                }
-                return null;
-              },
-            ),
-            InputTextField(
-              hintText: "Enter Phone",
-              controller: _phoneController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your phone number';
-                }
-                final phoneRegex = RegExp(r'^\+?[0-9]{7,15}$');
-                if (!phoneRegex.hasMatch(value)) {
-                  return 'Please enter a valid phone number';
-                }
-                return null;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 7.0,
-                bottom: 7.0,
-              ),
-              child: DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  fillColor: Color(0xfff9f9f9),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Create an Account",
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontFamily: "Inter",
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                hint: Text("Select User Type"),
-                value: _selectedUserType,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedUserType = newValue;
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a user type';
-                  }
-                  return null;
-                },
-                items: <String>['Client', 'Workshop']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
-            InputTextField(
-              hintText: "Enter your password",
-              obscureText: true,
-              controller: _passwordController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
-                }
-                if (value.length < 8) {
-                  return 'Password must be at least 8 characters long';
-                }
-                return null;
-              },
-            ),
-            InputTextField(
-              hintText: "Repeat your password",
-              obscureText: true,
-              controller: _confirmPasswordController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please confirm your password';
-                }
-                if (value != _passwordController.text) {
-                  return 'Passwords do not match';
-                }
-                return null;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 7.0,
-                bottom: 7.0,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                InputTextField(
+                  hintText: "Enter Email",
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                ),
+                InputTextField(
+                  hintText: "Enter Phone",
+                  controller: _phoneController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your phone number';
+                    }
+                    final phoneRegex = RegExp(r'^\+?[0-9]{7,15}$');
+                    if (!phoneRegex.hasMatch(value)) {
+                      return 'Please enter a valid phone number';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 7.0,
+                    bottom: 7.0,
                   ),
-                  onPressed: _isLoading ? null : _register,
-                  child: _isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold, // Color del texto
-                          ),
+                  child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      fillColor: Color(0xFFF1F1F1),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    hint: Text("Select User Type"),
+                    value: _selectedUserType,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedUserType = newValue;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select a user type';
+                      }
+                      return null;
+                    },
+                    items: <String>['Client', 'Workshop']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                InputTextField(
+                  hintText: "Enter your password",
+                  obscureText: true,
+                  controller: _passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    if (value.length < 8) {
+                      return 'Password must be at least 8 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                InputTextField(
+                  hintText: "Repeat your password",
+                  obscureText: true,
+                  controller: _confirmPasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 7.0,
+                    bottom: 7.0,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                ),
-              ),
-            ),
-            Center(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: 'Already have an account?',
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Inter",
+                      ),
+                      onPressed: _isLoading ? null : _register,
+                      child: _isLoading
+                          ? CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold, // Color del texto
+                              ),
+                            ),
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: ' Sign In',
+                  ),
+                ),
+                Center(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: 'Already have an account?',
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.black54,
                           fontWeight: FontWeight.bold,
                           fontFamily: "Inter",
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Login()),
-                            );
-                          },
-                      )
-                    ]),
-              ),
-            )
-          ],
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: ' Sign In',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Inter",
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()),
+                                );
+                              },
+                          )
+                        ]),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -298,9 +302,9 @@ class _InputTextFieldState extends State<InputTextField> {
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(fontWeight: FontWeight.bold),
-          fillColor: Color(0xfff9f9f9),
+          fillColor: Color(0xFFF1F1F1),
           filled: true,
-          focusColor: Color(0xfff9f9f9),
+          focusColor: Color(0xFFF1F1F1),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none),
