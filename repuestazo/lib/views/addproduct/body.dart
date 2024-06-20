@@ -80,88 +80,90 @@ class _AddProductFormState extends State<AddProductForm> {
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nombre'),
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Por favor ingrese un nombre';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _priceController,
-              decoration: InputDecoration(labelText: 'Precio'),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Por favor ingrese un precio';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Descripción'),
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Por favor ingrese una descripción';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _brandController,
-              decoration: InputDecoration(labelText: 'Marca del Carro'),
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Por favor ingrese la marca del carro';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _modelController,
-              decoration: InputDecoration(labelText: 'Modelo del Carro'),
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Por favor ingrese el modelo del carro';
-                }
-                return null;
-              },
-            ),
-            DropdownButtonFormField<String>(
-              value: _selectedCategory,
-              decoration: InputDecoration(labelText: 'Clasificación'),
-              items: _categories.map((category) {
-                return DropdownMenuItem(
-                  value: category,
-                  child: Text(category),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedCategory = newValue;
-                });
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Por favor seleccione una clasificación';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _addProduct,
-                    child: Text('Agregar Producto'),
-                  ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Nombre'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Por favor ingrese un nombre';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _priceController,
+                decoration: InputDecoration(labelText: 'Precio'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Por favor ingrese un precio';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Descripción'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Por favor ingrese una descripción';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _brandController,
+                decoration: InputDecoration(labelText: 'Marca del Carro'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Por favor ingrese la marca del carro';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _modelController,
+                decoration: InputDecoration(labelText: 'Modelo del Carro'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Por favor ingrese el modelo del carro';
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                value: _selectedCategory,
+                decoration: InputDecoration(labelText: 'Clasificación'),
+                items: _categories.map((category) {
+                  return DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Por favor seleccione una clasificación';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              _isLoading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _addProduct,
+                      child: Text('Agregar Producto'),
+                    ),
+            ],
+          ),
         ),
       ),
     );
