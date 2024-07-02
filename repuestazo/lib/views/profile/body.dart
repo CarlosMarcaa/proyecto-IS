@@ -1,26 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-class ProfilePage extends StatefulWidget {
-  @override
-  ProfilePageState createState() => ProfilePageState();
-}
-
-class ProfilePageState extends State<ProfilePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Perfil de Usuario'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-      ),
-      body: Body(),
-    );
-  }
-}
+import 'my_posts_page.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -84,7 +65,7 @@ class BodyState extends State<Body> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(36.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -93,40 +74,45 @@ class BodyState extends State<Body> {
             _buildEditableField('Descripción', descriptionController,
                 maxLines: 5),
           ],
-          Text(
-            'Email',
-            style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.bold),
-          ),
+          _buildInfoField('Email', userData!['email']),
           SizedBox(height: 16),
-          Text(
-            '   ${userData!['email']}',
-            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-          ),
+          _buildEditableField('Teléfono', phoneController),
           SizedBox(height: 16),
-          _buildEditableField('Teléfono:', phoneController),
-          SizedBox(height: 16),
-          Text(
-            'Tipo de Usuario',
-            style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 16),
-          Text(
-            '   ${userData!['userType']}',
-            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-          ),
-          SizedBox(height: 16),
+          _buildInfoField('Tipo de Usuario', userData!['userType']),
+          SizedBox(height: 24),
+          if (userData!['userType'] == 'Workshop') ...[
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyPostsPage(userId: user!.uid),
+                    ),
+                  );
+                },
+                child: Text('Mis Publicaciones'),
+              ),
+            ),
+            SizedBox(height: 16),
+          ],
           Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: isEditing ? Colors.green : Colors.black,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: isEditing
                   ? saveChanges
@@ -177,6 +163,34 @@ class BodyState extends State<Body> {
                   style: TextStyle(fontSize: 16, color: Colors.grey[800]),
                 ),
               ),
+      ],
+    );
+  }
+
+  Widget _buildInfoField(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        Container(
+          padding: EdgeInsets.all(12),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.grey[200],
+          ),
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+          ),
+        ),
       ],
     );
   }
