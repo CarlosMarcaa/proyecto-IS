@@ -86,29 +86,59 @@ class _EditProductSheetState extends State<EditProductSheet> {
   }
 
   Future<void> saveChanges() async {
-    await FirebaseFirestore.instance
-        .collection('products')
-        .doc(widget.productId)
-        .update({
-      'name': nameController.text,
-      'description': descriptionController.text,
-      'price': int.parse(priceController.text),
-    });
-    Navigator.pop(context);
+    try {
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.productId)
+          .update({
+        'name': nameController.text,
+        'description': descriptionController.text,
+        'price': int.parse(priceController.text),
+      });
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Producto actualizado con éxito.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al actualizar el producto.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Future<void> deleteProduct() async {
-    await FirebaseFirestore.instance
-        .collection('products')
-        .doc(widget.productId)
-        .delete();
-    Navigator.pop(context);
+    try {
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.productId)
+          .delete();
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Producto eliminado con éxito.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al eliminar el producto.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
