@@ -112,74 +112,128 @@ class CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchCartItems(),
-      builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Text('Error al obtener datos de Firestore: ${snapshot.error}');
-        } else if (snapshot.data!.isEmpty) {
-          return Center(child: Text('No hay productos en el carrito'));
-        } else {
-          // Calcular el costo total del carrito
-          double totalCost = snapshot.data!.fold(0.0, (sum, item) {
-            return sum + (item['price'] * item['quantity']);
-          });
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(
+          'Carrito de Compras',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: FutureBuilder(
+        future: fetchCartItems(),
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text(
+                    'Error al obtener datos de Firestore: ${snapshot.error}'));
+          } else if (snapshot.data!.isEmpty) {
+            return Center(child: Text('No hay productos en el carrito'));
+          } else {
+            // Calcular el costo total del carrito
+            double totalCost = snapshot.data!.fold(0.0, (sum, item) {
+              return sum + (item['price'] * item['quantity']);
+            });
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    var item = snapshot.data![index];
-                    return ListTile(
-                      title: Text('${item['name']} x ${item['quantity']}'),
-                      subtitle: Text(
-                          'Marca: ${item['brand']}\nModelo: ${item['model']}\nPrecio: ${item['price']}\$'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.remove_circle),
-                        onPressed: () {
-                          _showDeleteConfirmationDialog(
-                              item['id'], item['quantity']);
-                        },
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductView(
-                              brand: item['brand'],
-                              category: item['category'],
-                              description: item['description'],
-                              model: item['model'],
-                              name: item['name'],
-                              price: item['price'],
-                              userId: item['userId'],
-                            ),
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      var item = snapshot.data![index];
+                      return Card(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.grey[300],
+                            child: Icon(Icons.car_repair, color: Colors.black),
                           ),
-                        );
-                      },
-                    );
-                  },
+                          title: Text(
+                            '${item['name']} x ${item['quantity']}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            'Marca: ${item['brand']}\nModelo: ${item['model']}\nPrecio: ${item['price']}\$',
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.remove_circle, color: Colors.red),
+                            onPressed: () {
+                              _showDeleteConfirmationDialog(
+                                  item['id'], item['quantity']);
+                            },
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductView(
+                                  brand: item['brand'],
+                                  category: item['category'],
+                                  description: item['description'],
+                                  model: item['model'],
+                                  name: item['name'],
+                                  price: item['price'],
+                                  userId: item['userId'],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Costo total: $totalCost\$'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: initiatePurchase,
-                  child: Text('Iniciar compra'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Costo total:',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\$${totalCost.toStringAsFixed(2)}',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
-      },
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: initiatePurchase,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'Iniciar compra',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 }
