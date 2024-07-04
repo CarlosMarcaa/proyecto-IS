@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:repuestazo/models/item.dart';
 
 class Searcher extends SearchDelegate {
   String? selectedBrand;
@@ -61,18 +62,16 @@ class Searcher extends SearchDelegate {
           itemCount: results.length,
           itemBuilder: (context, index) {
             var product = results[index].data() as Map<String, dynamic>;
-            return Card(
-              child: ListTile(
-                title: Text(product['name']),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Marca: ${product['brand']}'),
-                    Text('Modelo: ${product['model']}'),
-                    Text('Categoría: ${product['category']}'),
-                    Text('Precio: \$${product['price']}'),
-                  ],
-                ),
+            return Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Item(
+                brand: product['brand'],
+                category: product['category'],
+                description: product['description'],
+                model: product['model'],
+                name: product['name'],
+                price: product['price'],
+                userId: product['userId'],
               ),
             );
           },

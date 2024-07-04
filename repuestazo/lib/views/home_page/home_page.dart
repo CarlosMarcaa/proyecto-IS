@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/views/addproduct/addproduct.dart';
+import 'package:repuestazo/views/home_page/body.dart';
 import 'package:repuestazo/views/login/login.dart';
-import 'package:repuestazo/views/notification/notification.dart';
 import 'package:repuestazo/views/products/products.dart';
 import 'package:repuestazo/views/profile/profile.dart';
 import 'package:repuestazo/views/shoppingcart/shopping_cart.dart';
@@ -105,27 +105,8 @@ class HomePageState extends State<HomePage> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotificationPage()),
-                  );
-                },
-                child: Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                ),
-              ))
-        ],
       ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
-      ),
+      body: Body(currentIndex: currentIndex, pages: pages),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: onTabTapped,
