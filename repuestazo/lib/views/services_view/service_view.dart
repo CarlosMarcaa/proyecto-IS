@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class WorshopView extends StatefulWidget {
+class ServiceView extends StatefulWidget {
   final String brand;
   final String category;
   final String description;
@@ -11,7 +11,7 @@ class WorshopView extends StatefulWidget {
   final int price;
   final String userId;
 
-  WorshopView(
+  ServiceView(
       {Key? key,
       required this.brand,
       required this.category,
@@ -22,10 +22,10 @@ class WorshopView extends StatefulWidget {
       required this.userId})
       : super(key: key);
 
-  WorshopViewState createState() => WorshopViewState();
+  ServiceViewState createState() => ServiceViewState();
 }
 
-class WorshopViewState extends State<WorshopView> {
+class ServiceViewState extends State<ServiceView> {
   late String brand;
   late String category;
   late String description;
@@ -142,7 +142,7 @@ class WorshopViewState extends State<WorshopView> {
           child: ListView(
             children: [
               ListTile(
-                title: Text('TALLER: $name'),
+                title: Text('SERVICIO: $name'),
               ),
               ListTile(
                 title: Text('Brand: $brand'),
