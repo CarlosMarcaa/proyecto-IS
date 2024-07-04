@@ -8,6 +8,7 @@ import 'package:repuestazo/views/products/products.dart';
 import 'package:repuestazo/views/profile/profile.dart';
 import 'package:repuestazo/views/shoppingcart/shopping_cart.dart';
 import 'package:repuestazo/views/workshop_list/workshop_list.dart';
+import 'package:repuestazo/views/services_list/service_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -46,7 +47,12 @@ class HomePageState extends State<HomePage> {
             ProfilePage()
           ];
         } else if (userType == 'Workshop') {
-          pages = [ProductsPage(), AddProductScreen(), ProfilePage()];
+          pages = [
+            ProductsPage(),
+            AddProductScreen(),
+            ServiceListPage(),
+            ProfilePage()
+          ];
         }
       });
     }
@@ -140,6 +146,9 @@ class HomePageState extends State<HomePage> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.add, color: Colors.black),
                       label: "Agregar Producto"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.task_alt, color: Colors.black),
+                      label: "Servicios activos"),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.account_circle, color: Colors.black),
                     label: "Perfil",
