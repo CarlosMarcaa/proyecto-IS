@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "648824532681-9c2gd4nl1cnh71toirtaco4aav6bqddc.apps.googleusercontent.com",
+          "client_id": "648824532681-kejvh8434vgd0qod0734t5ik0grvnq0r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.repuestazo",
-            "certificate_hash": "314beb66579837ee09310e53942af10bcb5a7b37"
+            "certificate_hash": "2084173b7362e69111955fe3e62b5446957d6c6c"
           }
         },
         {
