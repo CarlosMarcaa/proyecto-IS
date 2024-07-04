@@ -37,22 +37,37 @@ class BodyState extends State<Body> {
   }
 
   Future<void> saveChanges() async {
-    if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .update({
-        'phone': phoneController.text,
-        if (userData?['userType'] == 'Workshop')
-          'description': descriptionController.text,
-      });
-      setState(() {
-        userData!['phone'] = phoneController.text;
-        if (userData!['userType'] == 'Workshop') {
-          userData!['description'] = descriptionController.text;
-        }
-        isEditing = false;
-      });
+    try {
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user!.uid)
+            .update({
+          'phone': phoneController.text,
+          if (userData?['userType'] == 'Workshop')
+            'description': descriptionController.text,
+        });
+        setState(() {
+          userData!['phone'] = phoneController.text;
+          if (userData!['userType'] == 'Workshop') {
+            userData!['description'] = descriptionController.text;
+          }
+          isEditing = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Cambios guardados con éxito.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al guardar los cambios.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
