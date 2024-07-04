@@ -161,7 +161,7 @@ class _AddProductFormState extends State<AddProductForm> {
                   ? CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: _addProduct,
-                      child: Text('Agregar Producto'),
+                      child: Text('Agregar'),
                     ),
             ],
           ),
