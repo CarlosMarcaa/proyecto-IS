@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/login/login.dart';
+import 'package:repuestazo/views/register/complete_profile.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -54,13 +55,22 @@ class _BodyState extends State<Body> {
           'userType': _selectedUserType,
         });
 
+        if (_selectedUserType == 'Workshop') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CompleteProfilePage(userId: userCredential.user!.uid)),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('User registered successfully')),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

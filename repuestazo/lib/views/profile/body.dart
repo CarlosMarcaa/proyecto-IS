@@ -14,6 +14,7 @@ class BodyState extends State<Body> {
   bool isEditing = false;
   TextEditingController phoneController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  String workshopName = '';
 
   @override
   void initState() {
@@ -31,8 +32,19 @@ class BodyState extends State<Body> {
       setState(() {
         userData = snapshot.data() as Map<String, dynamic>?;
         phoneController.text = userData?['phone'] ?? '';
-        descriptionController.text = userData?['description'] ?? '';
       });
+
+      if (userData?['userType'] == 'Workshop') {
+        DocumentSnapshot workshopSnapshot = await FirebaseFirestore.instance
+            .collection('workshops')
+            .doc(user!.uid)
+            .get();
+        setState(() {
+          workshopName = workshopSnapshot.get('workshopName');
+          descriptionController.text =
+              workshopSnapshot.get('workshopDescription') ?? '';
+        });
+      }
     }
   }
 
@@ -43,9 +55,17 @@ class BodyState extends State<Body> {
           .doc(user!.uid)
           .update({
         'phone': phoneController.text,
-        if (userData?['userType'] == 'Workshop')
-          'description': descriptionController.text,
       });
+
+      if (userData?['userType'] == 'Workshop') {
+        await FirebaseFirestore.instance
+            .collection('workshops')
+            .doc(user!.uid)
+            .update({
+          'workshopDescription': descriptionController.text,
+        });
+      }
+
       setState(() {
         userData!['phone'] = phoneController.text;
         if (userData!['userType'] == 'Workshop') {
@@ -64,63 +84,68 @@ class BodyState extends State<Body> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (userData!['userType'] == 'Workshop') ...[
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (userData!['userType'] == 'Workshop') ...[
+              SizedBox(height: 16),
+              _buildInfoField('Nombre del Taller', workshopName),
+              SizedBox(height: 16),
+              _buildEditableField(
+                  'Descripción del Taller', descriptionController,
+                  maxLines: 5),
+            ],
+            _buildInfoField('Email', userData!['email']),
             SizedBox(height: 16),
-            _buildEditableField('Descripción', descriptionController,
-                maxLines: 5),
-          ],
-          _buildInfoField('Email', userData!['email']),
-          SizedBox(height: 16),
-          _buildEditableField('Teléfono', phoneController),
-          SizedBox(height: 16),
-          _buildInfoField('Tipo de Usuario', userData!['userType']),
-          SizedBox(height: 24),
-          if (userData!['userType'] == 'Workshop') ...[
+            _buildEditableField('Teléfono', phoneController),
+            SizedBox(height: 16),
+            _buildInfoField('Tipo de Usuario', userData!['userType']),
+            SizedBox(height: 24),
+            if (userData!['userType'] == 'Workshop') ...[
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyPostsPage(userId: user!.uid),
+                      ),
+                    );
+                  },
+                  child: Text('Mis Publicaciones'),
+                ),
+              ),
+              SizedBox(height: 16),
+            ],
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: isEditing ? Colors.green : Colors.black,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyPostsPage(userId: user!.uid),
-                    ),
-                  );
-                },
-                child: Text('Mis Publicaciones'),
+                onPressed: isEditing
+                    ? saveChanges
+                    : () => setState(() => isEditing = true),
+                child: Text(isEditing ? 'Guardar Cambios' : 'Editar'),
               ),
             ),
-            SizedBox(height: 16),
           ],
-          Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isEditing ? Colors.green : Colors.black,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: isEditing
-                  ? saveChanges
-                  : () => setState(() => isEditing = true),
-              child: Text(isEditing ? 'Guardar Cambios' : 'Editar'),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
