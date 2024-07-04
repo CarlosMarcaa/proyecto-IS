@@ -225,7 +225,7 @@ class CartViewState extends State<CartView> {
                     ),
                     child: Text(
                       'Iniciar compra',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ),
