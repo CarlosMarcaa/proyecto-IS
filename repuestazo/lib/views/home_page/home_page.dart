@@ -7,6 +7,7 @@ import 'package:repuestazo/views/login/login.dart';
 import 'package:repuestazo/views/products/products.dart';
 import 'package:repuestazo/views/profile/profile.dart';
 import 'package:repuestazo/views/shoppingcart/shopping_cart.dart';
+import 'package:repuestazo/views/workshop_list/workshop_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -38,7 +39,12 @@ class HomePageState extends State<HomePage> {
         isLoading = false;
 
         if (userType == 'Client') {
-          pages = [ProductsPage(), ShoppingCartPage(), ProfilePage()];
+          pages = [
+            ProductsPage(),
+            ShoppingCartPage(),
+            WorkshopListPage(),
+            ProfilePage()
+          ];
         } else if (userType == 'Workshop') {
           pages = [ProductsPage(), AddProductScreen(), ProfilePage()];
         }
@@ -119,6 +125,9 @@ class HomePageState extends State<HomePage> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.shopping_cart, color: Colors.black),
                       label: "Carrito de compras"),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.build, color: Colors.black),
+                      label: "Talleres"),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.account_circle, color: Colors.black),
                     label: "Perfil",
