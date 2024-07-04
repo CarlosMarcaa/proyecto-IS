@@ -82,6 +82,7 @@ class WorshopViewState extends State<WorshopView> {
         // Producto no existe en el carrito, añadir nuevo
         await FirebaseFirestore.instance.collection('cart').add({
           'userId': user.uid,
+          'worshopId': userId,
           'brand': brand,
           'category': category,
           'description': description,

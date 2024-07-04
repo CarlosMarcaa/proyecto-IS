@@ -11,7 +11,7 @@ class ServiceListPageState extends State<ServiceListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(
-        category: 'Exterior',
+        category: 'Servicio',
       ),
     );
   }

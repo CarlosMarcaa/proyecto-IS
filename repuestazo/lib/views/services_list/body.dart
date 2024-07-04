@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/models/item_service.dart';
 
@@ -13,15 +14,19 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> {
   late String category;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   void initState() {
     category = widget.category;
   }
 
   Future<List<Item>> fetchDocuments() async {
+    User? user = auth.currentUser;
+
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('products')
+        .collection('cart')
         .where('category', isEqualTo: category)
+        .where('worshopId', isEqualTo: user?.uid)
         .get();
     List<Item> products = [];
     querySnapshot.docs.forEach((doc) {
