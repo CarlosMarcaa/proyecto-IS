@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:repuestazo/views/category_view/category_view.dart';
 
-//Clase para crear Categorias en la pagina principal (Stateful)
 class Category extends StatefulWidget {
   final String nameCategory;
   final String category;
@@ -13,11 +12,11 @@ class Category extends StatefulWidget {
   CategoryState createState() => CategoryState();
 }
 
-//Clase para el manejo del estado de Category
 class CategoryState extends State<Category> {
   late String nameCategory;
   late String category;
 
+  @override
   void initState() {
     super.initState();
     nameCategory = widget.nameCategory;
@@ -29,9 +28,11 @@ class CategoryState extends State<Category> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CategoryView(category: category)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryView(category: category),
+          ),
+        );
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
@@ -40,11 +41,28 @@ class CategoryState extends State<Category> {
           height: 150,
           alignment: Alignment.center,
           transformAlignment: Alignment.center,
-          child: Text(nameCategory,
-              style: TextStyle(color: Colors.white),
-              textAlign: TextAlign.center),
+          child: Text(
+            nameCategory,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
           decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(20)),
+            color: Colors.grey[800], // Color gris oscuro
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.black, width: 2), // Bordes negros
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
         ),
       ),
     );

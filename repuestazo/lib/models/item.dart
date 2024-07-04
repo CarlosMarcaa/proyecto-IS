@@ -25,6 +25,7 @@ class Item extends StatefulWidget {
 }
 
 class ItemState extends State<Item> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
@@ -45,29 +46,84 @@ class ItemState extends State<Item> {
         child: Container(
           height: 150,
           width: 375,
+          margin: EdgeInsets.symmetric(vertical: 8.0),
           decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
           child: Row(
             children: [
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(0),
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(0),
-                    ),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        "Marca: ${widget.brand}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "Modelo: ${widget.model}",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "Precio: ${widget.price}\$",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               Expanded(
-                flex: 2,
-                child: Center(
-                  child: Text(
-                      "${widget.name}\nMarca: ${widget.brand}\nModelo: ${widget.model}\nPrecio: ${widget.price}\$"),
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(0),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(0),
+                    ),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.car_repair,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ],
