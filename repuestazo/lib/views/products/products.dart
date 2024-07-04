@@ -14,13 +14,12 @@ class ProductsPageState extends State<ProductsPage> {
     final double screenWidth = screenSize.width;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showSearch(context: context, delegate: Searcher());
-        },
-        child: Icon(Icons.search),
-      ),
-      body: Body()
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showSearch(context: context, delegate: Searcher());
+          },
+          child: Icon(Icons.search),
+        ),
+        body: Body());
   }
 }

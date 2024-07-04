@@ -1,111 +1,83 @@
 import 'package:flutter/material.dart';
-
-import 'API.dart';
-import 'Usermodel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Searcher extends SearchDelegate {
-  String? selectedLevel;
-  String? part;
+  String? selectedBrand;
+  String? selectedCategory;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            query = "";
-          })
+        icon: Icon(Icons.close),
+        onPressed: () {
+          query = "";
+        },
+      ),
     ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.arrow_back_ios),
-        onPressed: () {
-          Navigator.pop(context);
-        });
+      icon: Icon(Icons.arrow_back_ios),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
   }
-
-  FetchUser _userList = FetchUser();
 
   @override
   Widget buildResults(BuildContext context) {
-    int cont;
-    return Stack(
-      children: [
-        Container(
-          child: FutureBuilder<List<UserList>>(
-            future: _userList.getUserList(query: query),
-            builder: (context, snapshot) {
-              var data = snapshot.data;
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView.builder(
-                itemCount: data?.length,
-                itemBuilder: (context, index) {
-                  if (selectedLevel != null &&
-                      data![index].level != selectedLevel) {
-                    return Container();
-                  }
-                  return Card(
-                    child: ListTile(
-                      title: Row(
-                        children: [
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'ID',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${data?[index].name}',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text('${data?[index].level}'),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-          child: FloatingActionButton(
-            onPressed: () {
-              showPopup(context);
-            },
-            child: const Icon(Icons.filter_alt),
-          ),
-        ),
-      ],
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('products').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        var results = snapshot.data!.docs.where((doc) {
+          var product = doc.data() as Map<String, dynamic>;
+          bool matchesQuery = query.isEmpty ||
+              product['name'].toLowerCase().contains(query.toLowerCase()) ||
+              product['brand'].toLowerCase().contains(query.toLowerCase()) ||
+              product['model'].toLowerCase().contains(query.toLowerCase());
+          bool matchesBrand =
+              selectedBrand == null || product['brand'] == selectedBrand;
+          bool matchesCategory = selectedCategory == null ||
+              product['category'] == selectedCategory;
+          return matchesQuery && matchesBrand && matchesCategory;
+        }).toList();
+
+        if (results.isEmpty) {
+          return Center(
+            child: Text('No se encontraron productos'),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: results.length,
+          itemBuilder: (context, index) {
+            var product = results[index].data() as Map<String, dynamic>;
+            return Card(
+              child: ListTile(
+                title: Text(product['name']),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Marca: ${product['brand']}'),
+                    Text('Modelo: ${product['model']}'),
+                    Text('Categoría: ${product['category']}'),
+                    Text('Precio: \$${product['price']}'),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -114,7 +86,7 @@ class Searcher extends SearchDelegate {
     return Stack(
       children: [
         Center(
-          child: Text('Search car parts, products and more...'),
+          child: Text('Buscar productos...'),
         ),
         Positioned(
           bottom: 20.0,
@@ -155,7 +127,7 @@ class Searcher extends SearchDelegate {
                   ),
                   const SizedBox(height: 10.0),
 
-                  //Filtro marca
+                  // Filtro marca
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -164,125 +136,77 @@ class Searcher extends SearchDelegate {
                         style: TextStyle(fontSize: 16.0),
                       ),
                       const SizedBox(width: 10.0),
-                      DropdownButton<String>(
-                        value: selectedLevel,
-                        items: const [
-                          DropdownMenuItem<String>(
-                            value: 'in Training',
-                            child: Text('in Training'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Rookie',
-                            child: Text('Rookie'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Champion',
-                            child: Text('Champion'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Ultimate',
-                            child: Text('Ultimate'),
-                          ),
-                        ],
-                        onChanged: (newLevel) {
-                          selectedLevel = newLevel;
-                          Navigator.pop(context);
-                          showPopup(context);
+                      StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('products')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return CircularProgressIndicator();
+                          var brands = snapshot.data!.docs
+                              .map((doc) => doc['brand'].toString())
+                              .toSet()
+                              .toList();
+                          return DropdownButton<String>(
+                            value: selectedBrand,
+                            items: brands
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (newBrand) {
+                              selectedBrand = newBrand;
+                              Navigator.pop(context);
+                              showPopup(context);
+                            },
+                          );
                         },
                       ),
                     ],
                   ),
                   const SizedBox(height: 10.0),
 
-                  //Filtro Tipo de pieza
+                  // Filtro categoría
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Pieza:',
+                        'Categoría:',
                         style: TextStyle(fontSize: 16.0),
                       ),
                       const SizedBox(width: 10.0),
-                      DropdownButton<String>(
-                        value: part,
-                        items: const [
-                          DropdownMenuItem<String>(
-                            value: 'Motor',
-                            child: Text('Motor'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Transmisión',
-                            child: Text('Transmisión'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Suspensión',
-                            child: Text('Suspensión'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Frenos',
-                            child: Text('Frenos'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Eléctrico',
-                            child: Text('Eléctrico'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Interior',
-                            child: Text('Interior'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Exterior',
-                            child: Text('Exterior'),
-                          ),
-                        ],
-                        onChanged: (newPart) {
-                          part = newPart;
-                          Navigator.pop(context);
-                          showPopup(context);
+                      StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('products')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return CircularProgressIndicator();
+                          var categories = snapshot.data!.docs
+                              .map((doc) => doc['category'].toString())
+                              .toSet()
+                              .toList();
+                          return DropdownButton<String>(
+                            value: selectedCategory,
+                            items: categories
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (newCategory) {
+                              selectedCategory = newCategory;
+                              Navigator.pop(context);
+                              showPopup(context);
+                            },
+                          );
                         },
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 10.0),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Año:',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                      const SizedBox(width: 10.0),
-                      DropdownButton<String>(
-                        value: selectedLevel,
-                        items: const [
-                          DropdownMenuItem<String>(
-                            value: 'in Training',
-                            child: Text('in Training'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Rookie',
-                            child: Text('Rookie'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Champion',
-                            child: Text('Champion'),
-                          ),
-                          DropdownMenuItem<String>(
-                            value: 'Ultimate',
-                            child: Text('Ultimate'),
-                          ),
-                        ],
-                        onChanged: (newLevel) {
-                          selectedLevel = newLevel;
-                          Navigator.pop(context);
-                          showPopup(context);
-                        },
-                      ),
-                    ],
-                  ),
-
                   const SizedBox(height: 20.0),
 
                   Row(
@@ -297,8 +221,8 @@ class Searcher extends SearchDelegate {
                       const SizedBox(width: 10.0),
                       ElevatedButton(
                         onPressed: () {
-                          selectedLevel = null;
-
+                          selectedBrand = null;
+                          selectedCategory = null;
                           Navigator.pop(context);
                         },
                         child: const Text('Borrar'),
@@ -314,64 +238,3 @@ class Searcher extends SearchDelegate {
     );
   }
 }
-
-
-
-
-
-
-/*void showPopup(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Center(
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.3,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Filtros',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10.0),
-                const Text(
-                  'This is the popup content. You can add more widgets, text, or custom UI elements here.',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                const SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        print('Yes button pressed!');
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Yes'),
-                    ),
-                    const SizedBox(width: 10.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        print('No button pressed!');
-                        Navigator.pop(context);
-                      },
-                      child: const Text('No'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}*/
