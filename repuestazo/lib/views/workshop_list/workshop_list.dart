@@ -11,7 +11,7 @@ class WorkshopListPageState extends State<WorkshopListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(
-        category: 'Exterior',
+        category: 'Servicio',
       ),
     );
   }
