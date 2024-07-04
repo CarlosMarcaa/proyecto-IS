@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/searcher.dart';
+import 'package:repuestazo/views/searcher/searcher.dart';
 import 'package:repuestazo/views/products/body.dart';
 
 class ProductsPage extends StatefulWidget {
