@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:repuestazo/views/checkout/checkout.dart';
 import 'package:repuestazo/views/product_view/product_view.dart'; // Importa la vista del producto
 
 class CartView extends StatefulWidget {
@@ -106,8 +107,13 @@ class CartViewState extends State<CartView> {
     );
   }
 
-  void initiatePurchase() {
-    // Implementar la lógica para iniciar la compra
+  void initiatePurchase(List<Map<String, dynamic>> cartItems) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckoutView(cartItems: cartItems),
+      ),
+    );
   }
 
   @override
@@ -172,7 +178,9 @@ class CartViewState extends State<CartView> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
-                  onPressed: initiatePurchase,
+                  onPressed: () {
+                    initiatePurchase(snapshot.data!); // Pass the cartItems here
+                  },
                   child: Text('Iniciar compra'),
                 ),
               ),
