@@ -143,19 +143,22 @@ class WorshopViewState extends State<WorshopView> {
           child: ListView(
             children: [
               ListTile(
-                title: Text('TALLER: $name'),
+                title: Text(
+                  '$name',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
               ),
               ListTile(
-                title: Text('Brand: $brand'),
+                title: Text('Marca: $brand'),
               ),
               ListTile(
-                title: Text('Description: $description'),
+                title: Text('Modelo: $model'),
               ),
               ListTile(
-                title: Text('Model: $model'),
+                title: Text('Descripción: $description'),
               ),
               ListTile(
-                title: Text('Price: $price'),
+                title: Text('Precio: $price'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

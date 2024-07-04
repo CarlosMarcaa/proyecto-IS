@@ -95,7 +95,7 @@ class ItemState extends State<Item> {
                       ),
                       SizedBox(height: 5),
                       Text(
-                        'Taller: ${widget.brand}',
+                        'Marca: ${widget.brand}',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
