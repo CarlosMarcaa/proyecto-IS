@@ -145,7 +145,7 @@ class HomePageState extends State<HomePage> {
                       label: "Productos"),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.add, color: Colors.black),
-                      label: "Agregar Producto"),
+                      label: "Agregar"),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.task_alt, color: Colors.black),
                       label: "Servicios activos"),
