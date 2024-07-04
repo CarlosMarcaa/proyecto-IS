@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:repuestazo/views/client_home_page/client_home_page.dart';
 import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/register/register.dart';
 
@@ -56,19 +55,10 @@ class _BodyState extends State<Body> {
 
           if (userDoc.exists) {
             String userType = userDoc['userType'];
-            if (userType == 'Client') {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ClientHomePage()),
-              );
-            } else if (userType == 'Workshop') {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            } else {
-              throw Exception('UserType no reconocido');
-            }
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           } else {
             throw Exception('Datos del usuario no existen');
           }
