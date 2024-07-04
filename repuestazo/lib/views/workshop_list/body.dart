@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/models/item.dart';
+import 'package:repuestazo/models/item_worshop.dart';
 
 class Body extends StatefulWidget {
   final String category;

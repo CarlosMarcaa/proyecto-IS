@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:repuestazo/searcher.dart';
+import 'package:repuestazo/views/searcher/searcher.dart';
 import 'package:repuestazo/views/products/body.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -14,13 +14,12 @@ class ProductsPageState extends State<ProductsPage> {
     final double screenWidth = screenSize.width;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showSearch(context: context, delegate: Searcher());
-        },
-        child: Icon(Icons.search),
-      ),
-      body: Body()
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showSearch(context: context, delegate: Searcher());
+          },
+          child: Icon(Icons.search),
+        ),
+        body: Body());
   }
 }

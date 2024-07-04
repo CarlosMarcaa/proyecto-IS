@@ -3,47 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:repuestazo/views/category_view/category_view.dart';
 
 //Clase para crear Categorias en la pagina principal (Stateful)
-class Category extends StatefulWidget{
+class Category extends StatefulWidget {
   final String nameCategory;
   final String category;
 
-  const Category({Key? key, required this.nameCategory, required this.category}) : super(key: key);
+  const Category({Key? key, required this.nameCategory, required this.category})
+      : super(key: key);
 
   CategoryState createState() => CategoryState();
 }
 
 //Clase para el manejo del estado de Category
-class CategoryState extends State<Category>{
+class CategoryState extends State<Category> {
   late String nameCategory;
   late String category;
 
-  void initState(){
+  void initState() {
     super.initState();
     nameCategory = widget.nameCategory;
     category = widget.category;
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CategoryView(category: category))
-        );
+            MaterialPageRoute(
+                builder: (context) => CategoryView(category: category)));
       },
-      child: Container(
-        width: 150,
-        height: 150,
-        alignment: Alignment.center,
-        transformAlignment: Alignment.center,
-        child: Text(nameCategory, style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(20)
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          width: 150,
+          height: 150,
+          alignment: Alignment.center,
+          transformAlignment: Alignment.center,
+          child: Text(nameCategory,
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.center),
+          decoration: BoxDecoration(
+              color: Colors.black, borderRadius: BorderRadius.circular(20)),
         ),
       ),
     );
-
   }
 }

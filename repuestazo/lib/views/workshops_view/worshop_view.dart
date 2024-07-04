@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:repuestazo/views/product_view/body.dart';
 
-class ProductView extends StatefulWidget {
+class WorshopView extends StatefulWidget {
   final String brand;
   final String category;
   final String description;
@@ -12,7 +12,7 @@ class ProductView extends StatefulWidget {
   final int price;
   final String userId;
 
-  ProductView(
+  WorshopView(
       {Key? key,
       required this.brand,
       required this.category,
@@ -23,10 +23,10 @@ class ProductView extends StatefulWidget {
       required this.userId})
       : super(key: key);
 
-  ProductViewState createState() => ProductViewState();
+  WorshopViewState createState() => WorshopViewState();
 }
 
-class ProductViewState extends State<ProductView> {
+class WorshopViewState extends State<WorshopView> {
   late String brand;
   late String category;
   late String description;
@@ -143,7 +143,7 @@ class ProductViewState extends State<ProductView> {
           child: ListView(
             children: [
               ListTile(
-                title: Text('Name: $name'),
+                title: Text('TALLER: $name'),
               ),
               ListTile(
                 title: Text('Brand: $brand'),

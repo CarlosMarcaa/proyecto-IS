@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:repuestazo/views/product_view/product_view.dart';
+import 'package:repuestazo/views/workshops_view/worshop_view.dart';
 
 // ignore: must_be_immutable
 class Item extends StatefulWidget {
@@ -31,7 +31,7 @@ class ItemState extends State<Item> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProductView(
+                builder: (context) => WorshopView(
                     brand: widget.brand,
                     category: widget.category,
                     description: widget.description,
@@ -67,7 +67,7 @@ class ItemState extends State<Item> {
                 flex: 2,
                 child: Center(
                   child: Text(
-                      "${widget.name}\nMarca: ${widget.brand}\nModelo: ${widget.model}\nPrecio: ${widget.price}\$"),
+                      "${widget.name}\nTALLER: ${widget.brand}\nModelo: ${widget.model}\nPrecio: ${widget.price}\$"),
                 ),
               ),
             ],

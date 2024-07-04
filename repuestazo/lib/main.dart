@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:repuestazo/views/client_home_page/client_home_page.dart';
 import 'package:repuestazo/views/home_page/home_page.dart';
 import 'package:repuestazo/views/login/login.dart';
 import 'firebase_options.dart';
@@ -60,14 +59,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 if (data.containsKey('userType')) {
                   final userType = data['userType'];
                   print('UserType: $userType'); // Log for debugging
-                  if (userType == 'Client') {
-                    return ClientHomePage();
-                  } else if (userType == 'Workshop') {
-                    return HomePage();
-                  } else {
-                    print('UserType no reconocido: $userType');
-                    return Login(); // Default case if userType is not recognized
-                  }
+                  return HomePage();
                 } else {
                   print('Campo userType no encontrado');
                   return Login(); // Default case if userType field doesn't exist
