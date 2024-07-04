@@ -24,7 +24,8 @@ class _AddProductFormState extends State<AddProductForm> {
     'Frenos',
     'Eléctrico',
     'Interior',
-    'Exterior'
+    'Exterior',
+    'Servicio' // Nueva categoría agregada
   ];
 
   Future<void> _addProduct() async {
