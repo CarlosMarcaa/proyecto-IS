@@ -226,16 +226,16 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-            Center(
-              child: TextButton.icon(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.black,
-                ),
-                icon: Icon(Icons.login),
-                label: Text('Sign in with Google'),
-                onPressed: _signInWithGoogle,
-              ),
-            ),
+            // Center(
+            //   child: TextButton.icon(
+            //     style: TextButton.styleFrom(
+            //       foregroundColor: Colors.black,
+            //     ),
+            //     icon: Icon(Icons.login),
+            //     label: Text('Sign in with Google'),
+            //     onPressed: _signInWithGoogle,
+            //   ),
+            // ),
             SizedBox(height: 20),
             Center(
               child: RichText(
